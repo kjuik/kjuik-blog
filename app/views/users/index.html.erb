@@ -1,0 +1,32 @@
+<h1>Users</h1>
+
+<% if current_admin %>
+	<div class="administer" style="text-align:right">
+		<%= link_to '[New]', new_user_path %>
+	</div>
+<% end %>
+
+<hr/>
+
+<table>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.nick %></td>
+    <td>
+		<% if user.admin %>
+			<%= image_tag("admin.jpg", :alt => "admin") %>
+		<% end %>
+	</td>
+	<% if current_admin %>
+		<td class="administer"><%= link_to '[edit]', edit_user_path(user) %></td>
+		<td class="administer">
+			<% if current_user != user %>
+				<%= link_to '[destroy]', user, confirm: 'Are you sure?', method: :delete %>
+			<% end %>
+		</td>
+		
+	<% end %>
+  </tr>
+<% end %>
+</table>

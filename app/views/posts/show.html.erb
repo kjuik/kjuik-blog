@@ -1,0 +1,53 @@
+<table>
+	<tr>
+		<td class="post_title">
+			<%= @post.title %>
+		</td>
+		<td>
+			- by <%= User.find(@post.user).nick %>
+		</td>
+	</tr>
+</table>
+
+<p class="post_body">
+  <%= @post.body %>
+</p>
+
+<% if current_admin %>
+	<%= link_to 'Edit', edit_post_path(@post) %> |
+<% end %>
+
+<%= link_to 'Back', posts_path %>
+
+<hr/>
+
+<% @post.comments.each do |c| %>
+
+<table>
+	<tr>
+		<td class="comment_title">
+			<%=h User.find(c.user).nick %>
+		</td>
+		<td class="comment_info">
+			said <%= time_ago_in_words(c.created_at) %> ago
+		</td>
+	</tr>
+</table>
+
+<p class="comment_body">
+	<%= c.body %>
+</p>
+  
+<% end %>
+
+<hr/>
+
+<% if current_user %>
+	<%= form_for [@post, Comment.new] do |f| %>
+		<%= f.text_area :body %><br/>
+		<%= f.submit "Add Comment" %>
+	<% end %>
+<% end %>
+
+
+
