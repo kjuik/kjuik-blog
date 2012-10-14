@@ -42,7 +42,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 	@user.admin = false if @user.admin == nil
-	@user.admin = true if @user.nick == 'admin'
 	
     respond_to do |format|
       if @user.save
