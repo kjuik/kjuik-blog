@@ -24,6 +24,7 @@ class CommentsController < ApplicationController
   # GET /comments/new
   # GET /comments/new.json
   def new
+	if not current_user then redirect_to "/"and return end
     @comment = Comment.new
 
     respond_to do |format|
@@ -34,12 +35,14 @@ class CommentsController < ApplicationController
 
   # GET /comments/1/edit
   def edit
+	if not current_admin then redirect_to "/"and return end
     @comment = Comment.find(params[:id])
   end
 
   # POST /comments
   # POST /comments.json
   def create
+	if not current_user then redirect_to "/"and return end
 	@post = Post.find(params[:post_id])
     @comment =  @post.comments.create!(params[:comment])
 	@comment.user = User.find(current_user)
@@ -53,11 +56,14 @@ class CommentsController < ApplicationController
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
     end
+	rescue ActiveRecord::RecordInvalid
+		redirect_to "/posts/#{@post.id}" and return $end
   end
 
   # PUT /comments/1
   # PUT /comments/1.json
   def update
+	if not current_admin then redirect_to "/"and return end
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
@@ -74,6 +80,7 @@ class CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
+	if not current_admin then redirect_to "/"and return end
     @comment = Comment.find(params[:id])
     @comment.destroy
 

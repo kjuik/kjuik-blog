@@ -34,14 +34,16 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+	if not current_user then redirect_to "/" and return end
     @user = User.find(params[:id])
+	if (@user != current_user) and (not current_admin) then redirect_to "/"and return end
   end
 
   # POST /users
   # POST /users.json
   def create
     @user = User.new(params[:user])
-	@user.admin = false if @user.admin == nil
+	@user.admin = current_admin
 	
     respond_to do |format|
       if @user.save
@@ -58,6 +60,9 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+	if (@user != current_user) and (not current_admin) then 
+		redirect_to "/" and return 
+	end
 	
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -73,6 +78,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+	if not current_admin then redirect_to "/"and return end
+  
     @user = User.find(params[:id])
     @user.destroy
 

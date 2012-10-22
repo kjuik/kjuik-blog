@@ -24,6 +24,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   # GET /posts/new.json
   def new
+	if not current_admin then redirect_to "/"and return end
     @post = Post.new
 
     respond_to do |format|
@@ -34,12 +35,14 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+	if not current_admin then redirect_to "/"and return end
     @post = Post.find(params[:id])
   end
 
   # POST /posts
   # POST /posts.json
   def create
+	if not current_admin then redirect_to "/"and return end
     @post = Post.new(params[:post])
 	@post.user = User.find(current_user)
 
@@ -57,6 +60,7 @@ class PostsController < ApplicationController
   # PUT /posts/1
   # PUT /posts/1.json
   def update
+	if not current_admin then redirect_to "/"and return end
     @post = Post.find(params[:id])
 
     respond_to do |format|
@@ -73,6 +77,7 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+	if not current_admin then redirect_to "/"and return end
     @post = Post.find(params[:id])
     @post.destroy
 
