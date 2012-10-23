@@ -1,46 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Blog</title>
-  <%= stylesheet_link_tag "blue" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
-	<table id = "top">
-		<tr>
-			<td id="facebook">
-				 <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
-				  <fb:like href="http://www.facebook.com/kjuiksblog" layout="button_count" show_faces="false" width="450"></fb:like>
-			<td>
-			<td id="nav">
-				<% if current_user %>
-					<%= link_to "Edit Profile", edit_user_path(current_user.id)%> |
-					<%= link_to "Logout", :logout%>
-				<% else %>
-					<%= link_to "Register", new_user_path%> | 
-					<%= link_to "Login", :login %>
-				<% end %>
-			</td>
-		</tr>
-	</table>
-	
-	
-	<hr/>
-	
-	<div id="menu">
-		<%= link_to "Posts", :posts%> |
-		<%= link_to "Users", :users%>
-    </div>
-	
-	<hr/>
-	
-	<p id="notice"><%= notice %></p>
-
-	<div id="main">
-		<%= yield %>
-	</div>
-
-</body>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><%= content_for?(:title) ? yield(:title) : "Blog" %></title>
+		<meta name="description" content="blog">
+		<meta name="author" content="kjuik">
+		<%= stylesheet_link_tag    "application", :media => "all" %>
+		<%= javascript_include_tag "bootstrap.min" %>
+		<%= csrf_meta_tags %>
+		<%= yield(:head) %>
+	</head>
+	<body>
+		
+		<header class="navbar navbar-fixed-top">
+		  <nav class="navbar-inner">
+			<table width="100%">
+				<tr>
+					<td>
+						<div class="container">
+						  <%= render 'layouts/logging' %>
+						</div>
+					</td>
+					<td>
+						<%= render 'layouts/facebook' %>
+					</td>
+				</tr>
+			</table>
+		  </nav>
+		</header>
+		
+		<%if notice != nil %>
+			<div class="well">
+				<center><%= notice %></center>
+			</div>
+		<% end %>
+		
+		<div class="tabbable tabs-left">
+			<%= render 'layouts/navigation' %>
+			<div class="tab-content well">
+				<%= yield %>
+			</div>
+		</div>
+	</body>
 </html>

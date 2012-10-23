@@ -1,27 +1,55 @@
-<h1>Posts</h1>
-
-<% if current_admin %>
-	<div class="administer" style="text-align:right">
-		<%= link_to '[New]', new_post_path %>
-	</div>
-<% end %>
+<h3>Posts</h3>
 
 <hr/>
 
-<table>
-
+<table class="table">
+<thead>
+	<tr>
+		<td><b>
+			author
+		</b></td>
+		<td><b>
+			title
+		</b></td>
+		<td><b>
+			modified
+		</b></td>
+		<td><% if current_admin %><b>
+			commands
+		</b><% end %></td>
+		<td></td>
+	</tr>
+</thead>
+<tbody>
 <% @posts.each do |post| %>
   <tr>
-	<td><%= User.find(post.user).nick %>: </td>
-    <td class="post_title"><%= link_to post.title, post %></td>
-	<td class="post_info">
-		( <%= time_ago_in_words(post.created_at) %> ago ;
-		<%= post.comments.count %> comments )
+	<td><%= User.find(post.user).nick %></td>
+    <td><%= link_to post.title, post %></td>
+	<td>
+		<%= time_ago_in_words(post.created_at) %> ago
 	</td>
 	<% if current_admin %>
-		<td class="administer"><%= link_to '[edit]', edit_post_path(post) %></td>
-		<td class="administer"><%= link_to '[destroy]', post, confirm: 'Are you sure?', method: :delete %></td>
+		<td>
+			<table>
+				<tr>
+					<td>
+					<%= button_to 'edit', edit_post_path(post), :method => 'get', :class => 'btn btn-small' %>
+					</td>
+					<td>
+						<%= button_to 'destroy', post, confirm: 'Are you sure?', method: :delete, :class => 'btn btn-small' %>
+					</td>
+				</tr>
+			</table>
+		</td>
 	<% end %>
+  </tr>
+<% end %>
+<% if current_admin %>
+  <tr>
+	<td/><td/><td/>
+	<td>
+		<%= button_to 'New post', new_post_path, :method => 'get', :class => 'btn btn-small btn-primary' %>
+	</td>
   </tr>
 <% end %>
 </table>

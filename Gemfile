@@ -6,8 +6,8 @@ gem 'rails', '3.2.1'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-
 gem 'authlogic'
+gem 'bootstrap-sass'
 
 group :development, :test do
    gem 'sqlite3'
